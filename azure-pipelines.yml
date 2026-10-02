@@ -46,6 +46,10 @@ stages:
         --output $(Build.ArtifactStagingDirectory)/publish
       displayName: 'Publish Application'
 
+    - script: |
+        rm -rf $(Build.ArtifactStagingDirectory)/publish/Tests
+        displayName: 'Remove Test Files'
+        
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact'
       inputs:
