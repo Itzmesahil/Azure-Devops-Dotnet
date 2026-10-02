@@ -41,9 +41,9 @@ stages:
 
     - script: |
         dotnet publish DotNetDevOpsDemo.csproj \
-          --configuration Release \
-          --no-build \
-          --output $(Build.ArtifactStagingDirectory)/publish
+        --configuration Release \
+        --no-build \
+        --output $(Build.ArtifactStagingDirectory)/publish
       displayName: 'Publish Application'
 
     - task: PublishPipelineArtifact@1
