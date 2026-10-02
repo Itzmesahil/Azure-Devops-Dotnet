@@ -1,19 +1,37 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - dev/feature
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-24.04'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- stage: CI
+  displayName: 'Continuous Integration'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  jobs:
+
+  - job: Build
+    displayName: 'Build and Test .NET Application'
+
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Install Dotnet 8.0'
+      inputs:
+        packageType: 'sdk'
+        version: '8.0.x'
+
+    - script: dotnet restore
+      displayName: "Restore Dependencies"
+
+    - script: dotnet build --configuration Release --no-restore
+      displayName: 'Run Tests'
+
+    - script: dotnet publish DotNetDevOpsDemo.csproj --configuration Release --no-build --output $(Build.ArtifactStagingDirectory)/publish
+      displayName: 'Publish Application'
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/publish'
+        artifact: 'dotnet-app'
+        publishLocation: 'pipeline'
