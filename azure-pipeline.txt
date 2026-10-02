@@ -1,0 +1,1 @@
+Pipeline │ ├── trigger ├── pool │ └── stages │ └── stage │ └── jobs │ └── job │ └── steps ├── task ├── script ├── task └── script
