@@ -5,6 +5,7 @@ pool:
   vmImage: 'ubuntu-24.04'
 
 stages:
+
 - stage: CI
   displayName: 'Continuous Integration'
 
@@ -14,19 +15,35 @@ stages:
     displayName: 'Build and Test .NET Application'
 
     steps:
+
     - task: UseDotNet@2
-      displayName: 'Install Dotnet 8.0'
+      displayName: 'Install .NET 8'
       inputs:
         packageType: 'sdk'
         version: '8.0.x'
 
-    - script: dotnet restore
-      displayName: "Restore Dependencies"
+    - script: |
+        dotnet restore DotNetDevOpsDemo.csproj
+        dotnet restore Tests/DotNetDevOpsDemo.Tests.csproj
+      displayName: 'Restore Dependencies'
 
-    - script: dotnet build --configuration Release --no-restore
+    - script: |
+        dotnet build DotNetDevOpsDemo.csproj \
+          --configuration Release \
+          --no-restore
+      displayName: 'Build Application'
+
+    - script: |
+        dotnet test Tests/DotNetDevOpsDemo.Tests.csproj \
+          --configuration Release \
+          --no-restore
       displayName: 'Run Tests'
 
-    - script: dotnet publish DotNetDevOpsDemo.csproj --configuration Release --no-build --output $(Build.ArtifactStagingDirectory)/publish
+    - script: |
+        dotnet publish DotNetDevOpsDemo.csproj \
+          --configuration Release \
+          --no-build \
+          --output $(Build.ArtifactStagingDirectory)/publish
       displayName: 'Publish Application'
 
     - task: PublishPipelineArtifact@1
