@@ -76,3 +76,11 @@ stages:
         buildType: 'current'
         artifactName: 'dotnet-app'
         targetPath: '$(Pipeline.Workspace)/dotnet-app'
+
+    - task: AzureWebApp@1
+      displayName: 'Deploy to Azure App Service'
+      inputs:
+        azureSubscription: 'Azure subscription 1'
+        appType: 'webAppLinux'
+        appName: 'dotnet-cicd'
+        package: '$(Pipeline.Workspace)/dotnet-app'
