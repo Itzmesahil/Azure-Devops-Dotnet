@@ -56,3 +56,23 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)/publish'
         artifact: 'dotnet-app'
         publishLocation: 'pipeline'
+
+#CD STAGE
+- stage: CD
+  displayName: 'Continous Deployment'
+
+  dependsOn: CI
+
+  condition: succeeded()
+
+  jobs:
+  - job: Deploy
+    displayName: 'Deploy to Azure App Service'
+
+    steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Artifact'
+      inputs:
+        buildType: 'current'
+        artifactName: 'dotnet-app'
+        targetPath: '$(Pipeline.Workspace)/dotnet-app'
