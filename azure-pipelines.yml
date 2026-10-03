@@ -80,7 +80,7 @@ stages:
     - task: AzureWebApp@1
       displayName: 'Deploy to Azure App Service'
       inputs:
-        azureSubscription: 'Azure subscription 1'
+        azureSubscription: 'Azure subscription 1 (1c727d3e-e7e8-4ba0-b82d-39e5846f228f)'
         appType: 'webAppLinux'
         appName: 'dotnet-cicd'
         package: '$(Pipeline.Workspace)/dotnet-app'
