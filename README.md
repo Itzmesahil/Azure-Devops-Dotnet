@@ -8,4 +8,4 @@ Endpoints:
 
 Pipeline:
 Git → Restore → Build → Test → Publish → Artifact → Deploy
-Branch protection test
+Branch protection tests
