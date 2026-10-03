@@ -1,20 +1,10 @@
-# .NET DevOps Demo
+# .NET DevOps GUI Demo
+ASP.NET Core 8 application for Azure DevOps multi-stage YAML CI/CD practice.
 
-Simple ASP.NET Core .NET 8 application for Azure DevOps YAML CI/CD practice.
+Endpoints:
+- `/` responsive DevOps dashboard
+- `/api/health` health check
+- `/api/info` application/runtime information
 
-Endpoints: `/` and `/health`.
-
-## Local
-```bash
-dotnet restore
-dotnet build
-dotnet test
-dotnet run
-```
-
-## Publish
-```bash
-dotnet publish -c Release -o publish
-```
-
-The `publish/` directory is the deployable output and will be used to practice Pipeline Artifacts.
+Pipeline:
+Git → Restore → Build → Test → Publish → Artifact → Deploy

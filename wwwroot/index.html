@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>.NET DevOps Dashboard</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1b2e;--text:#edf5ff;--muted:#91a5bd;--accent:#59a6ff;--green:#35d07f;--border:rgba(255,255,255,.09)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 85% 5%,#15345a 0,transparent 32%),var(--bg);color:var(--text)}
+.wrap{max-width:1180px;margin:auto;padding:28px 22px 50px}.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:55px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px}.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#59a6ff,#7b61ff);display:grid;place-items:center}
+.pill{border:1px solid var(--border);background:#ffffff08;padding:8px 13px;border-radius:999px;color:#bcd0e8;font-size:13px}
+.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:28px}.hero h1{font-size:clamp(38px,6vw,70px);line-height:.98;margin:0 0 20px;letter-spacing:-3px}
+.hero p{font-size:18px;line-height:1.7;color:var(--muted);max-width:720px}.gradient{background:linear-gradient(90deg,#fff,#74b7ff);-webkit-background-clip:text;color:transparent}
+.status{background:linear-gradient(160deg,#10253e,#0b1728);border:1px solid var(--border);border-radius:24px;padding:26px}.status-top{display:flex;justify-content:space-between}.dot{width:11px;height:11px;background:var(--green);border-radius:50%;box-shadow:0 0 18px #35d07f}.status h3{margin:28px 0 6px;font-size:27px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:55px}.card{background:#ffffff06;border:1px solid var(--border);border-radius:18px;padding:22px}.card h3{margin:0 0 8px}.card p{color:var(--muted);line-height:1.6;margin:0}.icon{font-size:25px;margin-bottom:20px}
+.pipeline{margin-top:42px}.pipeline h2{font-size:30px}.flow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px}.step{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:13px 16px}.arrow{color:#68819d}
+.footer{margin-top:55px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.footer{flex-direction:column;gap:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav"><div class="brand"><div class="logo">⌘</div>.NET DevOps Demo</div><div class="pill">ASP.NET Core 8 • Azure App Service</div></nav>
+<section class="hero">
+<div><h1>Built to ship.<br><span class="gradient">Ready to run.</span></h1>
+<p>A clean ASP.NET Core application deployed through a multi-stage Azure DevOps CI/CD pipeline. Build, test, publish an artifact, and deploy automatically.</p></div>
+<div class="status"><div class="status-top"><span class="muted">Application Status</span><span class="dot"></span></div><h3 id="status">Checking...</h3><div class="muted" id="details">Connecting to health endpoint</div></div>
+</section>
+<section class="grid">
+<div class="card"><div class="icon">⚙️</div><h3>.NET 8</h3><p>ASP.NET Core application running on a modern managed runtime.</p></div>
+<div class="card"><div class="icon">🚀</div><h3>CI/CD</h3><p>Azure Pipelines builds, tests, publishes an artifact, and deploys it.</p></div>
+<div class="card"><div class="icon">☁️</div><h3>Azure App Service</h3><p>Managed Linux hosting with deployment handled by the CD stage.</p></div>
+</section>
+<section class="pipeline"><h2>Delivery Pipeline</h2><div class="flow"><div class="step">Git Push</div><span class="arrow">→</span><div class="step">Restore</div><span class="arrow">→</span><div class="step">Build</div><span class="arrow">→</span><div class="step">Test</div><span class="arrow">→</span><div class="step">Artifact</div><span class="arrow">→</span><div class="step">Deploy</div></div></section>
+<footer class="footer"><span>DotNet DevOps Demo • v1.0.0</span><span id="runtime">Runtime: loading...</span></footer>
+</div>
+<script>
+async function load(){try{const h=await fetch('/api/health'),d=await h.json();document.getElementById('status').textContent=d.status==='healthy'?'Healthy':'Unavailable';document.getElementById('details').textContent=`${d.application} • Version ${d.version}`;const i=await fetch('/api/info'),x=await i.json();document.getElementById('runtime').textContent=`Runtime: .NET ${x.runtime}`}catch(e){document.getElementById('status').textContent='Unavailable';document.getElementById('details').textContent='Health endpoint could not be reached'}}load();
+</script>
+</body></html>
