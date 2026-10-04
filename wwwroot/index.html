@@ -3,50 +3,111 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>.NET DevOps Dashboard</title>
+<meta name="theme-color" content="#07111f">
+<title>Visitor Book • .NET DevOps Demo</title>
 <style>
-:root{--bg:#07111f;--panel:#0d1b2e;--text:#edf5ff;--muted:#91a5bd;--accent:#59a6ff;--green:#35d07f;--border:rgba(255,255,255,.09)}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 85% 5%,#15345a 0,transparent 32%),var(--bg);color:var(--text)}
-.wrap{max-width:1180px;margin:auto;padding:28px 22px 50px}.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:55px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px}.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#59a6ff,#7b61ff);display:grid;place-items:center}
-.pill{border:1px solid var(--border);background:#ffffff08;padding:8px 13px;border-radius:999px;color:#bcd0e8;font-size:13px}
-.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:28px}.hero h1{font-size:clamp(38px,6vw,70px);line-height:.98;margin:0 0 20px;letter-spacing:-3px}
-.hero p{font-size:18px;line-height:1.7;color:var(--muted);max-width:720px}.gradient{background:linear-gradient(90deg,#fff,#74b7ff);-webkit-background-clip:text;color:transparent}
-.status{background:linear-gradient(160deg,#10253e,#0b1728);border:1px solid var(--border);border-radius:24px;padding:26px}.status-top{display:flex;justify-content:space-between}.dot{width:11px;height:11px;background:var(--green);border-radius:50%;box-shadow:0 0 18px #35d07f}.status h3{margin:28px 0 6px;font-size:27px}.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:55px}.card{background:#ffffff06;border:1px solid var(--border);border-radius:18px;padding:22px}.card h3{margin:0 0 8px}.card p{color:var(--muted);line-height:1.6;margin:0}.icon{font-size:25px;margin-bottom:20px}
-.pipeline{margin-top:42px}.pipeline h2{font-size:30px}.flow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px}.step{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:13px 16px}.arrow{color:#68819d}
-.footer{margin-top:55px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
-@media(max-width:800px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.footer{flex-direction:column;gap:10px}}
-.visitors{margin-top:55px}.visitors h2{font-size:30px;margin-bottom:8px}.visitor-form{display:flex;gap:10px;margin:20px 0 12px;max-width:650px}.visitor-form input{flex:1;background:#ffffff08;border:1px solid var(--border);border-radius:12px;padding:14px 16px;color:var(--text);font-size:15px;outline:none}.visitor-form button{border:0;border-radius:12px;padding:14px 22px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.visitor-list{margin-top:18px;display:grid;gap:10px;max-width:800px}.visitor{display:flex;justify-content:space-between;gap:15px;background:#ffffff06;border:1px solid var(--border);border-radius:12px;padding:13px 16px}.visitor time{color:var(--muted);font-size:13px}@media(max-width:600px){.visitor-form{flex-direction:column}.visitor-form button{width:100%}.visitor{flex-direction:column;gap:5px}}
+:root{--bg:#06101d;--panel:#0b1829;--panel2:#0e2137;--text:#f5f9ff;--muted:#8ea4bd;--accent:#59a6ff;--accent2:#7c6cff;--green:#38d996;--danger:#ff6b7a;--border:rgba(255,255,255,.09);--shadow:0 24px 70px rgba(0,0,0,.25)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 10% 0%,rgba(89,166,255,.16),transparent 30%),radial-gradient(circle at 90% 8%,rgba(124,108,255,.14),transparent 26%),var(--bg);color:var(--text);min-height:100vh}.wrap{max-width:1180px;margin:auto;padding:24px 22px 54px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:48px}.brand{display:flex;align-items:center;gap:11px;font-weight:800}.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 10px 30px rgba(89,166,255,.2)}.pill{border:1px solid var(--border);background:#ffffff08;padding:8px 13px;border-radius:999px;color:#bcd0e8;font-size:13px}
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:26px;align-items:stretch}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#a9c9ef;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:17px}.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 15px var(--green)}h1{font-size:clamp(42px,6.3vw,76px);line-height:.95;margin:0 0 20px;letter-spacing:-4px}.gradient{background:linear-gradient(90deg,#fff 15%,#74b7ff 58%,#a89cff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{font-size:18px;line-height:1.75;color:var(--muted);max-width:710px;margin:0}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.primary,.secondary{border-radius:12px;padding:12px 17px;font-weight:750;cursor:pointer;border:1px solid var(--border);font-size:14px}.primary{background:var(--accent);color:white;border-color:transparent}.secondary{background:#ffffff08;color:#dbeaff}.primary:hover,.secondary:hover{filter:brightness(1.08)}button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.status{background:linear-gradient(160deg,rgba(16,37,62,.95),rgba(8,20,35,.96));border:1px solid var(--border);border-radius:24px;padding:25px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between}.status-top{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}.status-badge{display:flex;align-items:center;gap:8px}.dot{width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 16px rgba(56,217,150,.75)}.status h2{margin:30px 0 7px;font-size:31px}.status-meta{color:var(--muted);font-size:13px;line-height:1.7}.clock{font-variant-numeric:tabular-nums;color:#d8e8fb;margin-top:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}.stat{background:#ffffff06;border:1px solid var(--border);border-radius:17px;padding:18px}.stat-label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.stat-value{font-size:28px;font-weight:800;margin-top:7px}.stat-note{color:#7891ac;font-size:12px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.section{margin-top:52px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:17px}.section h2{font-size:30px;margin:0 0 7px;letter-spacing:-1px}.section-sub{color:var(--muted);margin:0;line-height:1.55}.refresh{background:#ffffff08;border:1px solid var(--border);color:#cfe2f8;border-radius:10px;padding:9px 12px;cursor:pointer}.refresh.spinning{opacity:.65}
+.pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:20px}.step{position:relative;background:linear-gradient(180deg,#0d1e32,#0a1727);border:1px solid var(--border);border-radius:14px;padding:15px;min-height:88px}.step-num{color:#6f8ba8;font-size:11px;font-weight:800}.step strong{display:block;margin-top:9px;font-size:14px}.step small{display:block;color:#738ba5;margin-top:5px;font-size:11px}.step:not(:last-child):after{content:'›';position:absolute;right:-10px;top:32px;color:#6281a3;font-size:22px;z-index:2}
+.visitor-shell{display:grid;grid-template-columns:.75fr 1.25fr;gap:18px}.form-card,.wall-card{background:linear-gradient(160deg,rgba(15,34,55,.96),rgba(8,19,32,.96));border:1px solid var(--border);border-radius:22px;padding:23px;box-shadow:var(--shadow)}.form-card h3,.wall-card h3{margin:0 0 7px;font-size:22px}.form-card p{color:var(--muted);line-height:1.55;margin:0 0 20px}.visitor-form{display:flex;gap:9px}.visitor-form input{min-width:0;flex:1;background:#071321;border:1px solid var(--border);border-radius:11px;padding:13px 14px;color:var(--text);font-size:15px}.visitor-form button{border:0;border-radius:11px;padding:13px 18px;background:linear-gradient(135deg,var(--accent),#6c7cff);color:#fff;font-weight:800;cursor:pointer}.visitor-form button:disabled{opacity:.55;cursor:wait}.message{min-height:21px;margin-top:11px;font-size:13px;color:var(--muted)}.message.success{color:var(--green)}.message.error{color:var(--danger)}.preview{margin-top:18px;border-top:1px solid var(--border);padding-top:16px;color:#7189a2;font-size:12px}.preview strong{color:#cfe2f7;font-size:14px}
+.wall-toolbar{display:flex;gap:9px;margin:17px 0 13px}.search{flex:1;background:#071321;border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);min-width:0}.filter{background:#071321;border:1px solid var(--border);border-radius:10px;color:#cfe2f7;padding:10px 11px}.visitor-list{display:grid;gap:9px;max-height:410px;overflow:auto;padding-right:3px}.visitor{display:flex;align-items:center;gap:12px;background:#ffffff05;border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:12px}.avatar{width:38px;height:38px;flex:0 0 38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#1d466e,#29386b);font-weight:800;color:#e8f3ff}.visitor-main{min-width:0;flex:1}.visitor-name{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.visitor-time{color:#738ba5;font-size:12px;margin-top:3px}.empty{padding:28px 8px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:13px}.count-note{color:#728ba5;font-size:12px}
+.footer{margin-top:55px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;color:var(--muted);font-size:13px;gap:15px}.toast{position:fixed;right:22px;bottom:22px;background:#102b46;border:1px solid rgba(89,166,255,.28);color:#e8f3ff;padding:13px 16px;border-radius:12px;box-shadow:var(--shadow);transform:translateY(18px);opacity:0;pointer-events:none;transition:.25s;z-index:20}.toast.show{transform:translateY(0);opacity:1}.confetti{position:fixed;top:-12px;width:7px;height:13px;border-radius:2px;pointer-events:none;z-index:30;animation:fall 900ms ease-out forwards}@keyframes fall{to{transform:translate3d(var(--x),110vh,0) rotate(600deg);opacity:0}}
+@media(max-width:900px){.hero,.visitor-shell{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(3,1fr)}.step:not(:last-child):after{display:none}}@media(max-width:620px){.wrap{padding:18px 15px 42px}.nav{align-items:flex-start;margin-bottom:34px}.pill{display:none}h1{letter-spacing:-2.5px}.stats{grid-template-columns:1fr}.pipeline{grid-template-columns:1fr 1fr}.visitor-form{flex-direction:column}.visitor-form button{width:100%}.footer{flex-direction:column}.wall-toolbar{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toast{transition:none}.confetti{animation:none;display:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<nav class="nav"><div class="brand"><div class="logo">⌘</div>.NET DevOps Demo</div><div class="pill">ASP.NET Core 8 • Azure App Service</div></nav>
-<section class="hero">
-<div><h1>Built to ship.<br><span class="gradient">Ready to run.</span></h1>
-<p>A clean ASP.NET Core application deployed through a multi-stage Azure DevOps CI/CD pipeline. Build, test, publish an artifact, and deploy automatically.</p></div>
-<div class="status"><div class="status-top"><span class="muted">Application Status</span><span class="dot"></span></div><h3 id="status">Checking...</h3><div class="muted" id="details">Connecting to health endpoint</div></div>
+<nav class="nav">
+  <div class="brand"><div class="logo">⌁</div><span>.NET DevOps Demo</span></div>
+  <div class="pill">ASP.NET Core 8&nbsp; • &nbsp;Azure App Service&nbsp; • &nbsp;MySQL</div>
+</nav>
+
+<section class="hero" id="top">
+  <div>
+    <div class="eyebrow"><i></i> Live cloud application</div>
+    <h1>Leave your mark.<br><span class="gradient">Meet the visitors.</span></h1>
+    <p>A production-style visitor experience powered by ASP.NET Core, Azure App Service and MySQL — delivered through an Azure DevOps CI/CD pipeline.</p>
+    <div class="hero-actions">
+      <button class="primary" type="button" id="joinBtn">Join the visitor wall ↓</button>
+      <button class="secondary" type="button" id="refreshTop">Refresh live data</button>
+    </div>
+  </div>
+  <aside class="status" aria-live="polite">
+    <div class="status-top"><span>Application status</span><span class="status-badge"><span class="dot" id="statusDot"></span><span id="statusLabel">Checking</span></span></div>
+    <div><h2 id="status">Connecting…</h2><div class="status-meta" id="details">Checking the health endpoint.</div></div>
+    <div class="clock" id="clock">--:--:--</div>
+  </aside>
 </section>
-<section class="grid">
-<div class="card"><div class="icon">⚙️</div><h3>.NET 8</h3><p>ASP.NET Core application running on a modern managed runtime.</p></div>
-<div class="card"><div class="icon">🚀</div><h3>CI/CD</h3><p>Azure Pipelines builds, tests, publishes an artifact, and deploys it.</p></div>
-<div class="card"><div class="icon">☁️</div><h3>Azure App Service</h3><p>Managed Linux hosting with deployment handled by the CD stage.</p></div>
+
+<section class="stats" aria-label="Visitor statistics">
+  <div class="stat"><div class="stat-label">Total visits</div><div class="stat-value" id="totalVisits">—</div><div class="stat-note">All recorded visitors</div></div>
+  <div class="stat"><div class="stat-label">Today</div><div class="stat-value" id="todayVisits">—</div><div class="stat-note">UTC calendar day</div></div>
+  <div class="stat"><div class="stat-label">Latest guest</div><div class="stat-value" id="latestVisitor">—</div><div class="stat-note" id="latestTime">Waiting for the first visit</div></div>
 </section>
-<section class="pipeline"><h2>Delivery Pipeline</h2><div class="flow"><div class="step">Git Push</div><span class="arrow">→</span><div class="step">Restore</div><span class="arrow">→</span><div class="step">Build</div><span class="arrow">→</span><div class="step">Test</div><span class="arrow">→</span><div class="step">Artifact</div><span class="arrow">→</span><div class="step">Deploy</div></div></section>
-<section class="visitors">
-<h2>Visitor Book</h2>
-<p class="muted">Enter your name to record a visit. Everyone can see the visitor list.</p>
-<div class="visitor-form"><input id="visitorName" maxlength="100" placeholder="Enter your name" autocomplete="name"><button id="visitBtn" onclick="addVisitor()">Visit</button></div>
-<div id="visitorMessage" class="muted"></div>
-<div id="visitorList" class="visitor-list"><div class="muted">Visitor list will appear when MySQL is connected.</div></div>
+
+<section class="section">
+  <div class="section-head"><div><h2>How this ships</h2><p class="section-sub">Every change follows the same repeatable delivery path.</p></div></div>
+  <div class="pipeline" aria-label="CI/CD pipeline">
+    <div class="step"><span class="step-num">01</span><strong>Git Push</strong><small>Azure Repos</small></div>
+    <div class="step"><span class="step-num">02</span><strong>Restore</strong><small>.NET dependencies</small></div>
+    <div class="step"><span class="step-num">03</span><strong>Build</strong><small>Release binary</small></div>
+    <div class="step"><span class="step-num">04</span><strong>Test</strong><small>xUnit validation</small></div>
+    <div class="step"><span class="step-num">05</span><strong>Artifact</strong><small>Pipeline package</small></div>
+    <div class="step"><span class="step-num">06</span><strong>Deploy</strong><small>Azure App Service</small></div>
+  </div>
 </section>
-<footer class="footer"><span>DotNet DevOps Demo • v1.0.0</span><span id="runtime">Runtime: loading...</span></footer>
+
+<section class="section" id="visitorBook">
+  <div class="section-head"><div><h2>Visitor wall</h2><p class="section-sub">Add your name and watch it appear for everyone.</p></div><button class="refresh" id="refreshBtn" type="button">↻ Refresh</button></div>
+  <div class="visitor-shell">
+    <div class="form-card">
+      <h3>Make an appearance</h3>
+      <p>Your name is stored in MySQL with a UTC timestamp. No page reload required.</p>
+      <form class="visitor-form" id="visitorForm">
+        <input id="visitorName" maxlength="100" placeholder="Your name" autocomplete="name" aria-label="Your name" required>
+        <button id="visitBtn" type="submit">Check in</button>
+      </form>
+      <div class="message" id="visitorMessage" aria-live="polite"></div>
+      <div class="preview">You will appear as<br><strong id="namePreview">Your name</strong></div>
+    </div>
+    <div class="wall-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h3>Recent visitors</h3><span class="count-note" id="shownCount">0 shown</span></div>
+      <div class="wall-toolbar">
+        <input class="search" id="search" placeholder="Search visitors…" aria-label="Search visitors">
+        <select class="filter" id="filter" aria-label="Filter visitors"><option value="all">All</option><option value="today">Today</option></select>
+      </div>
+      <div id="visitorList" class="visitor-list" aria-live="polite"><div class="empty">Loading the visitor wall…</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><span>DotNet DevOps Demo • v3.0.0</span><span id="runtime">Runtime: loading…</span></footer>
 </div>
+<div class="toast" id="toast" role="status"></div>
 <script>
-async function load(){try{const h=await fetch('/api/health'),d=await h.json();document.getElementById('status').textContent=d.status==='healthy'?'Healthy':'Unavailable';document.getElementById('details').textContent=`${d.application} • Version ${d.version}`;const i=await fetch('/api/info'),x=await i.json();document.getElementById('runtime').textContent=`Runtime: .NET ${x.runtime}`}catch(e){document.getElementById('status').textContent='Unavailable';document.getElementById('details').textContent='Health endpoint could not be reached'}}async function loadVisitors(){const list=document.getElementById('visitorList');try{const r=await fetch('/api/visitors');if(!r.ok)throw new Error();const visitors=await r.json();if(!visitors.length){list.innerHTML='<div class="muted">No visitors yet.</div>';return}list.innerHTML=visitors.map(v=>`<div class="visitor"><strong>${escapeHtml(v.name)}</strong><time>${new Date(v.visitedAtUtc).toLocaleString()}</time></div>`).join('')}catch(e){list.innerHTML='<div class="muted">Visitor list unavailable. Check the MySQL connection.</div>'}}
-function escapeHtml(value){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]))}
-async function addVisitor(){const input=document.getElementById('visitorName'),msg=document.getElementById('visitorMessage'),name=input.value.trim();if(!name){msg.textContent='Please enter your name.';return}const btn=document.getElementById('visitBtn');btn.disabled=true;try{const r=await fetch('/api/visitors',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});const data=await r.json();if(!r.ok)throw new Error(data.message||'Could not save visitor.');input.value='';msg.textContent='Visit recorded successfully.';await loadVisitors()}catch(e){msg.textContent=e.message}finally{btn.disabled=false}}
-load();loadVisitors();
+const state={visitors:[],lastSync:null};
+const $=id=>document.getElementById(id);
+function escapeHtml(value){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function initials(name){return name.trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'?';}
+function formatTime(value){const d=new Date(value);return Number.isNaN(d.getTime())?'Unknown time':d.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});}
+function isToday(value){const d=new Date(value),n=new Date();return d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()&&d.getDate()===n.getDate();}
+function relativeTime(value){const diff=Math.max(0,Date.now()-new Date(value).getTime());const mins=Math.floor(diff/60000);if(mins<1)return'just now';if(mins<60)return`${mins}m ago`;const hrs=Math.floor(mins/60);if(hrs<24)return`${hrs}h ago`;const days=Math.floor(hrs/24);return`${days}d ago`;}
+function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.remove('show'),2400);}
+function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<26;i++){const p=document.createElement('span');p.className='confetti';p.style.left=`${45+Math.random()*10}vw`;p.style.setProperty('--x',`${(Math.random()-.5)*380}px`);p.style.background=['#59a6ff','#7c6cff','#38d996','#ffd166'][i%4];p.style.animationDelay=`${Math.random()*160}ms`;document.body.appendChild(p);setTimeout(()=>p.remove(),1200);}}
+async function loadHealth(){try{const [h,i]=await Promise.all([fetch('/api/health',{cache:'no-store'}),fetch('/api/info',{cache:'no-store'})]);if(!h.ok||!i.ok)throw new Error();const health=await h.json(),info=await i.json();$('status').textContent=health.status==='healthy'?'All systems operational':'Degraded';$('statusLabel').textContent=health.status==='healthy'?'Online':'Issue';$('details').textContent=`${info.application} • ${info.environment} • ${health.version}`;$('runtime').textContent=`Runtime: .NET ${info.runtime}`;$('statusDot').style.background=health.status==='healthy'?'var(--green)':'var(--danger)';}catch(e){$('status').textContent='Unavailable';$('statusLabel').textContent='Offline';$('details').textContent='Health endpoint could not be reached.';$('statusDot').style.background='var(--danger)';$('runtime').textContent='Runtime: unavailable';}}
+async function loadStats(){try{const r=await fetch('/api/visitors/stats',{cache:'no-store'});if(!r.ok)throw new Error();const s=await r.json();$('totalVisits').textContent=s.total??0;$('todayVisits').textContent=s.today??0;$('latestVisitor').textContent=s.latestVisitor?escapeHtml(s.latestVisitor):'—';$('latestTime').textContent=s.latestVisitUtc?relativeTime(s.latestVisitUtc):'Waiting for the first visit';}catch(e){$('totalVisits').textContent='—';$('todayVisits').textContent='—';$('latestVisitor').textContent='—';$('latestTime').textContent='Stats unavailable';}}
+function renderVisitors(){const query=$('search').value.trim().toLowerCase();const filter=$('filter').value;const filtered=state.visitors.filter(v=>(!query||v.name.toLowerCase().includes(query))&&(filter==='all'||isToday(v.visitedAtUtc)));$('shownCount').textContent=`${filtered.length} shown`;if(!filtered.length){$('visitorList').innerHTML='<div class="empty">No visitors match your filter.</div>';return;}$('visitorList').innerHTML=filtered.map(v=>`<article class="visitor"><div class="avatar" aria-hidden="true">${escapeHtml(initials(v.name))}</div><div class="visitor-main"><div class="visitor-name">${escapeHtml(v.name)}</div><div class="visitor-time">${escapeHtml(relativeTime(v.visitedAtUtc))} · ${escapeHtml(formatTime(v.visitedAtUtc))}</div></div></article>`).join('');}
+async function loadVisitors(){const btn=$('refreshBtn');btn.classList.add('spinning');try{const r=await fetch('/api/visitors',{cache:'no-store'});if(!r.ok)throw new Error();state.visitors=await r.json();state.lastSync=new Date();renderVisitors();await loadStats();}catch(e){$('visitorList').innerHTML='<div class="empty">The visitor wall is temporarily unavailable. Try refresh again.</div>';}finally{btn.classList.remove('spinning');}}
+async function addVisitor(event){event.preventDefault();const input=$('visitorName'),msg=$('visitorMessage'),btn=$('visitBtn'),name=input.value.trim();msg.className='message';if(!name){msg.textContent='Please enter your name.';input.focus();return}btn.disabled=true;btn.textContent='Saving…';try{const r=await fetch('/api/visitors',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});const data=await r.json();if(!r.ok)throw new Error(data.message||data.detail||'Could not save your visit.');input.value='';$('namePreview').textContent='Your name';msg.textContent=`Welcome, ${name}! You are on the wall.`;msg.classList.add('success');confetti();toast('Visit recorded successfully ✨');await loadVisitors();$('visitorBook').scrollIntoView({behavior:'smooth',block:'start'});}catch(e){msg.textContent=e.message;msg.classList.add('error');}finally{btn.disabled=false;btn.textContent='Check in';}}
+$('visitorName').addEventListener('input',e=>$('namePreview').textContent=e.target.value.trim()||'Your name');$('visitorForm').addEventListener('submit',addVisitor);$('search').addEventListener('input',renderVisitors);$('filter').addEventListener('change',renderVisitors);$('refreshBtn').addEventListener('click',async()=>{await loadHealth();await loadVisitors();toast('Live data refreshed');});$('refreshTop').addEventListener('click',async()=>{await loadHealth();await loadVisitors();toast('Live data refreshed');});$('joinBtn').addEventListener('click',()=>$('visitorBook').scrollIntoView({behavior:'smooth'}));
+function tick(){ $('clock').textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});if(state.visitors.length){renderVisitors();loadStats();}}
+loadHealth();loadVisitors();tick();setInterval(tick,1000);setInterval(()=>{loadHealth();loadVisitors();},30000);
 </script>
-</body></html>
+</body>
+</html>
