@@ -17,6 +17,7 @@
 .pipeline{margin-top:42px}.pipeline h2{font-size:30px}.flow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px}.step{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:13px 16px}.arrow{color:#68819d}
 .footer{margin-top:55px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
 @media(max-width:800px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.footer{flex-direction:column;gap:10px}}
+.visitors{margin-top:55px}.visitors h2{font-size:30px;margin-bottom:8px}.visitor-form{display:flex;gap:10px;margin:20px 0 12px;max-width:650px}.visitor-form input{flex:1;background:#ffffff08;border:1px solid var(--border);border-radius:12px;padding:14px 16px;color:var(--text);font-size:15px;outline:none}.visitor-form button{border:0;border-radius:12px;padding:14px 22px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.visitor-list{margin-top:18px;display:grid;gap:10px;max-width:800px}.visitor{display:flex;justify-content:space-between;gap:15px;background:#ffffff06;border:1px solid var(--border);border-radius:12px;padding:13px 16px}.visitor time{color:var(--muted);font-size:13px}@media(max-width:600px){.visitor-form{flex-direction:column}.visitor-form button{width:100%}.visitor{flex-direction:column;gap:5px}}
 </style>
 </head>
 <body>
@@ -33,9 +34,19 @@
 <div class="card"><div class="icon">☁️</div><h3>Azure App Service</h3><p>Managed Linux hosting with deployment handled by the CD stage.</p></div>
 </section>
 <section class="pipeline"><h2>Delivery Pipeline</h2><div class="flow"><div class="step">Git Push</div><span class="arrow">→</span><div class="step">Restore</div><span class="arrow">→</span><div class="step">Build</div><span class="arrow">→</span><div class="step">Test</div><span class="arrow">→</span><div class="step">Artifact</div><span class="arrow">→</span><div class="step">Deploy</div></div></section>
+<section class="visitors">
+<h2>Visitor Book</h2>
+<p class="muted">Enter your name to record a visit. Everyone can see the visitor list.</p>
+<div class="visitor-form"><input id="visitorName" maxlength="100" placeholder="Enter your name" autocomplete="name"><button id="visitBtn" onclick="addVisitor()">Visit</button></div>
+<div id="visitorMessage" class="muted"></div>
+<div id="visitorList" class="visitor-list"><div class="muted">Visitor list will appear when MySQL is connected.</div></div>
+</section>
 <footer class="footer"><span>DotNet DevOps Demo • v1.0.0</span><span id="runtime">Runtime: loading...</span></footer>
 </div>
 <script>
-async function load(){try{const h=await fetch('/api/health'),d=await h.json();document.getElementById('status').textContent=d.status==='healthy'?'Healthy':'Unavailable';document.getElementById('details').textContent=`${d.application} • Version ${d.version}`;const i=await fetch('/api/info'),x=await i.json();document.getElementById('runtime').textContent=`Runtime: .NET ${x.runtime}`}catch(e){document.getElementById('status').textContent='Unavailable';document.getElementById('details').textContent='Health endpoint could not be reached'}}load();
+async function load(){try{const h=await fetch('/api/health'),d=await h.json();document.getElementById('status').textContent=d.status==='healthy'?'Healthy':'Unavailable';document.getElementById('details').textContent=`${d.application} • Version ${d.version}`;const i=await fetch('/api/info'),x=await i.json();document.getElementById('runtime').textContent=`Runtime: .NET ${x.runtime}`}catch(e){document.getElementById('status').textContent='Unavailable';document.getElementById('details').textContent='Health endpoint could not be reached'}}async function loadVisitors(){const list=document.getElementById('visitorList');try{const r=await fetch('/api/visitors');if(!r.ok)throw new Error();const visitors=await r.json();if(!visitors.length){list.innerHTML='<div class="muted">No visitors yet.</div>';return}list.innerHTML=visitors.map(v=>`<div class="visitor"><strong>${escapeHtml(v.name)}</strong><time>${new Date(v.visitedAtUtc).toLocaleString()}</time></div>`).join('')}catch(e){list.innerHTML='<div class="muted">Visitor list unavailable. Check the MySQL connection.</div>'}}
+function escapeHtml(value){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]))}
+async function addVisitor(){const input=document.getElementById('visitorName'),msg=document.getElementById('visitorMessage'),name=input.value.trim();if(!name){msg.textContent='Please enter your name.';return}const btn=document.getElementById('visitBtn');btn.disabled=true;try{const r=await fetch('/api/visitors',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});const data=await r.json();if(!r.ok)throw new Error(data.message||'Could not save visitor.');input.value='';msg.textContent='Visit recorded successfully.';await loadVisitors()}catch(e){msg.textContent=e.message}finally{btn.disabled=false}}
+load();loadVisitors();
 </script>
 </body></html>
