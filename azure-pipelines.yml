@@ -4,6 +4,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-24.04'
 
+variables:
+- group: Dotnet Variable Group
+
 stages:
 
 - stage: CI
@@ -77,10 +80,42 @@ stages:
         artifactName: 'dotnet-app'
         targetPath: '$(Pipeline.Workspace)/dotnet-app'
 
+    # Inject MySQL variables into App Service
+    - task: AzureAppServiceSettings@1
+      displayName: 'Configure MySQL Environment Variables'
+      inputs:
+        azureSubscription: 'Azure subscription 1 (1c727d3e-e7e8-4ba0-b82d-39e5846f228f)'
+        appName: 'dotnet-mysql'
+        resourceGroupName: 'dotnet-Project'
+        appSettings: |
+          [
+            {
+              "name": "MYSQL_SERVER",
+              "value": "$(MYSQL_SERVER)",
+              "slotSetting": false
+            },
+            {
+              "name": "MYSQL_DATABASE",
+              "value": "$(MYSQL_DATABASE)",
+              "slotSetting": false
+            },
+            {
+              "name": "MYSQL_USERNAME",
+              "value": "$(MYSQL_USERNAME)",
+              "slotSetting": false
+            },
+            {
+              "name": "MYSQL_PASSWORD",
+              "value": "$(MYSQL_PASSWORD)",
+              "slotSetting": false
+            }
+          ]
+
+    # Deploy application
     - task: AzureWebApp@1
       displayName: 'Deploy to Azure App Service'
       inputs:
         azureSubscription: 'Azure subscription 1 (1c727d3e-e7e8-4ba0-b82d-39e5846f228f)'
         appType: 'webAppLinux'
-        appName: 'dotnet-cicd'
+        appName: 'dotnet-mysql'
         package: '$(Pipeline.Workspace)/dotnet-app'

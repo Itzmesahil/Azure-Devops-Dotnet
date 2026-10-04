@@ -4,12 +4,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (!string.IsNullOrWhiteSpace(connectionString))
-{
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36))));
-}
+// Read MySQL configuration from environment variables
+var server = Environment.GetEnvironmentVariable("MYSQL_SERVER");
+var database = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
+var username = Environment.GetEnvironmentVariable("MYSQL_USERNAME");
+var password = Environment.GetEnvironmentVariable("MYSQL_PASSWORD");
+
+// Build MySQL connection string
+var connectionString =
+    $"Server={server};Port=3306;Database={database};User={username};Password={password};SslMode=Required;";
+
+// Configure Entity Framework Core with MySQL
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(
+        connectionString,
+        new MySqlServerVersion(new Version(8, 4, 0))));
 
 var app = builder.Build();
 
@@ -65,7 +74,9 @@ app.MapGet("/api/visitors", async (AppDbContext db) =>
 });
 
 app.MapFallbackToFile("index.html");
+
 app.Run();
 
 public record VisitorRequest(string? Name);
+
 public partial class Program { }
